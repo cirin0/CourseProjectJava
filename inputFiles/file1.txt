@@ -1,0 +1,4 @@
+N       Plane                 Speed    Distance     
+1       Boeing_747            570      12.5
+2       Airbus_A380           640      15.0
+3       Lockheed_SR-71        2200     30.0

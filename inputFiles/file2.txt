@@ -1,0 +1,4 @@
+N       Plane                 Speed    Distance     
+1       Cessna_172            120      2.5
+2       Gulfstream_G650       956      17.8
+3       Bombardier_Learjet    871      14.6

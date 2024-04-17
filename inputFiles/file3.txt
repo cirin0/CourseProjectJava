@@ -1,0 +1,4 @@
+N       Plane                     Speed    Distance     
+1       Embraer_Phenom_100        453      8.2
+2       Boeing_787                593      13.7
+3       McDonnell_Douglas_DC-10   910      16.3
