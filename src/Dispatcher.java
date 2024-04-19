@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Dispatcher {
   public static void main(String[] args) {
@@ -25,21 +22,24 @@ public class Dispatcher {
 }
 
 class Airplane implements Comparable<Airplane> {
-  private final String model;
-  private final int speed;
-  private final double distance;
+  private String model;
+  private int speed;
+  private double distance;
 
   Airplane(String model, int speed, double distance) {
     this.model = model;
     this.speed = speed;
     this.distance = distance;
   }
+
   public String getModel() {
     return model;
   }
+
   public int getSpeed() {
     return speed;
   }
+
   public double getDistance() {
     return distance;
   }
@@ -51,15 +51,15 @@ class Airplane implements Comparable<Airplane> {
 
   @Override
   public int compareTo(Airplane airplane) {
-    int result = Double.compare(this.speed, airplane.speed);
+    int result = this.model.compareTo(airplane.model);
     if (result != 0) {
       return result;
     } else {
-      result = this.model.compareTo(airplane.model);
+      result = Integer.compare(this.speed, airplane.speed);
       if (result != 0) {
         return result;
       } else {
-        return this.model.compareTo(airplane.model);
+        return Double.compare(this.distance, airplane.distance);
       }
     }
   }
@@ -81,7 +81,8 @@ class Controller {
         System.out.println("exception is thrown: " + ioe.getMessage());
       }
     }
-//        writeFiles(outputFilesDir, getSortedBottles(typeSort));  // !!!
+    sortAirplanes(typeSort);
+    writeFiles(outputFilesDir);
   }
 
   private static String inputSortType() {
@@ -110,18 +111,18 @@ class Controller {
     return str;
   }
 
-  private static void readFile(File file) throws IOException{
+  private static void readFile(File file) throws IOException {
     String line;
     BufferedReader br = new BufferedReader(new FileReader(file));
     boolean skipHeader = true;
-    while ((line = br.readLine()) != null){
+    while ((line = br.readLine()) != null) {
       if (skipHeader) {
         skipHeader = false;
         continue;
       }
       ArrayList<String> list = new ArrayList<>();
       splitLine(line, list);
-      sortPlanes(new Airplane(list.get(1), Integer.parseInt(list.get(2)), Double.parseDouble(list.get(3))));
+      separatePlanes(new Airplane(list.get(1), Integer.parseInt(list.get(2)), Double.parseDouble(list.get(3))));
     }
     br.close();
   }
@@ -135,7 +136,7 @@ class Controller {
     }
   }
 
-  private static void sortPlanes(Airplane airplane) {
+  private static void separatePlanes(Airplane airplane) {
     double speed = airplane.getSpeed();
     if (speed <= 800) {
       SLOW_AIRPLANES.add(airplane);
@@ -143,6 +144,85 @@ class Controller {
       MEDIUM_AIRPLANES.add(airplane);
     } else {
       FAST_AIRPLANES.add(airplane);
+    }
+  }
+
+  private static void writeFiles(File outputFilesDir) {
+    File[] outputFiles = {new File(outputFilesDir, "slowAirplanes.txt"),
+        new File(outputFilesDir, "mediumAirplanes.txt"),
+        new File(outputFilesDir, "fastAirplanes.txt")};
+    try {
+      PrintWriter pw = new PrintWriter(new File(outputFilesDir, "slowAirplanes.txt"));
+      for (int i = 0; i < SLOW_AIRPLANES.size(); i++) {
+        pw.println("" + i + SLOW_AIRPLANES.get(i));
+      }
+      pw = new PrintWriter(new File(outputFilesDir, "mediumAirplanes.txt"));
+      for (int i = 0; i < MEDIUM_AIRPLANES.size(); i++) {
+        pw.println("" + i + MEDIUM_AIRPLANES.get(i));
+      }
+      pw = new PrintWriter(new File(outputFilesDir, "fastAirplanes.txt"));
+      for (int i = 0; i < FAST_AIRPLANES.size(); i++) {
+        pw.println("" + i + FAST_AIRPLANES.get(i));
+      }
+      pw.flush();
+      pw.close();
+    } catch (FileNotFoundException fnfe) {
+      System.out.println("file for write not exist!");
+    }
+  }
+
+  private static void sortAirplanes(String key) {
+    switch (key) {
+      case "speed": {
+        Comparator<Airplane> speedComparator = new Comparator<>() {
+          @Override
+          public int compare(Airplane m1, Airplane m2) {
+            int result = Integer.compare(m1.getSpeed(), m2.getSpeed());
+            if (result != 0) {
+              return result;
+            } else {
+              result = m1.compareTo(m2);
+              if (result != 0) {
+                return result;
+              } else {
+                return Double.compare(m1.getDistance(), m2.getDistance());
+              }
+            }
+          }
+        };
+        Collections.sort(SLOW_AIRPLANES, speedComparator);
+        Collections.sort(MEDIUM_AIRPLANES, speedComparator);
+        Collections.sort(FAST_AIRPLANES, speedComparator);
+        break;
+      }
+      case "distance": {
+        Comparator<Airplane> distanceComparator = new Comparator<>() {
+          @Override
+          public int compare(Airplane m1, Airplane m2) {
+            int result = Double.compare(m1.getDistance(), m2.getDistance());
+            if (result != 0) {
+              return result;
+            } else {
+              result = m1.getModel().compareTo(m2.getModel());
+              if (result != 0) {
+                return result;
+              } else {
+                return Integer.compare(m1.getSpeed(), m2.getSpeed());
+              }
+            }
+          }
+        };
+        Collections.sort(SLOW_AIRPLANES, distanceComparator);
+        Collections.sort(MEDIUM_AIRPLANES, distanceComparator);
+        Collections.sort(FAST_AIRPLANES, distanceComparator);
+        break;
+      }
+      case "model":
+      default:
+        Collections.sort(SLOW_AIRPLANES);
+        Collections.sort(MEDIUM_AIRPLANES);
+        Collections.sort(FAST_AIRPLANES);
+        break;
     }
   }
 }
