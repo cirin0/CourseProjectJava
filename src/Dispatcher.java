@@ -130,7 +130,7 @@ class Controller {
   private static void splitLine(String line, ArrayList<String> list) { // !!!
     String[] array = line.split(" ");
     for (String str : array) {
-      if (str != "") {
+      if (!str.isEmpty()) {
         list.add(str);
       }
     }
@@ -148,7 +148,8 @@ class Controller {
   }
 
   private static void writeFiles(File outputFilesDir) {
-    File[] outputFiles = {new File(outputFilesDir, "slowAirplanes.txt"),
+    File[] outputFiles = {
+        new File(outputFilesDir, "slowAirplanes.txt"),
         new File(outputFilesDir, "mediumAirplanes.txt"),
         new File(outputFilesDir, "fastAirplanes.txt")};
     try {
@@ -173,6 +174,28 @@ class Controller {
 
   private static void sortAirplanes(String key) {
     switch (key) {
+      case "model":{
+        Comparator<Airplane> modelComparator = new Comparator<>() {
+          @Override
+          public int compare(Airplane m1, Airplane m2) {
+            int result = m1.getModel().compareTo(m2.getModel());
+            if (result != 0) {
+              return result;
+            } else {
+              result = Integer.compare(m1.getSpeed(), m2.getSpeed());
+              if (result != 0) {
+                return result;
+              } else {
+                return Double.compare(m1.getDistance(), m2.getDistance());
+              }
+            }
+          }
+        };
+        Collections.sort(SLOW_AIRPLANES, modelComparator);
+        Collections.sort(MEDIUM_AIRPLANES, modelComparator);
+        Collections.sort(FAST_AIRPLANES, modelComparator);
+        break;
+      }
       case "speed": {
         Comparator<Airplane> speedComparator = new Comparator<>() {
           @Override
@@ -203,7 +226,7 @@ class Controller {
             if (result != 0) {
               return result;
             } else {
-              result = m1.getModel().compareTo(m2.getModel());
+              result = m1.compareTo(m2);
               if (result != 0) {
                 return result;
               } else {
@@ -217,7 +240,6 @@ class Controller {
         Collections.sort(FAST_AIRPLANES, distanceComparator);
         break;
       }
-      case "model":
       default:
         Collections.sort(SLOW_AIRPLANES);
         Collections.sort(MEDIUM_AIRPLANES);
