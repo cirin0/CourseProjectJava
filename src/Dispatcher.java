@@ -14,17 +14,13 @@ public class Dispatcher {
 
     Controller.handleFiles(outputFiles, f1, f2, f3);
     System.out.println("files read and wrote");
-    //////////////////////////////////////////////////
-    System.out.println(Controller.SLOW_AIRPLANES);
-    System.out.println(Controller.MEDIUM_AIRPLANES);
-    System.out.println(Controller.FAST_AIRPLANES);
   }
 }
 
 class Airplane implements Comparable<Airplane> {
-  private String model;
-  private int speed;
-  private double distance;
+  private final String model;
+  private final int speed;
+  private final double distance;
 
   Airplane(String model, int speed, double distance) {
     this.model = model;
@@ -153,20 +149,26 @@ class Controller {
         new File(outputFilesDir, "mediumAirplanes.txt"),
         new File(outputFilesDir, "fastAirplanes.txt")};
     try {
-      PrintWriter pw = new PrintWriter(new File(outputFilesDir, "slowAirplanes.txt"));
+      PrintWriter slowWriter = new PrintWriter(new File(outputFilesDir, "slowAirplanes.txt"));
       for (int i = 0; i < SLOW_AIRPLANES.size(); i++) {
-        pw.println("" + i + SLOW_AIRPLANES.get(i));
+        slowWriter.println((i + 1)+ " " + SLOW_AIRPLANES.get(i));
       }
-      pw = new PrintWriter(new File(outputFilesDir, "mediumAirplanes.txt"));
+      slowWriter.flush();
+      slowWriter.close();
+
+      PrintWriter mediumWriter = new PrintWriter(new File(outputFilesDir, "mediumAirplanes.txt"));
       for (int i = 0; i < MEDIUM_AIRPLANES.size(); i++) {
-        pw.println("" + i + MEDIUM_AIRPLANES.get(i));
+        mediumWriter.println((i + 1)+ " " + MEDIUM_AIRPLANES.get(i));
       }
-      pw = new PrintWriter(new File(outputFilesDir, "fastAirplanes.txt"));
+      mediumWriter.flush();
+      mediumWriter.close();
+
+      PrintWriter fastWriter = new PrintWriter(new File(outputFilesDir, "fastAirplanes.txt"));
       for (int i = 0; i < FAST_AIRPLANES.size(); i++) {
-        pw.println("" + i + FAST_AIRPLANES.get(i));
+        fastWriter.println((i + 1)+ " " + FAST_AIRPLANES.get(i));
       }
-      pw.flush();
-      pw.close();
+      fastWriter.flush();
+      fastWriter.close();
     } catch (FileNotFoundException fnfe) {
       System.out.println("file for write not exist!");
     }

@@ -1,3 +1,4 @@
-0McDonnell_Douglas_DC-10 910 16.3
-1Gulfstream_G650 956 17.8
-2Lockheed_SR-71 2200 30.0
+1 Airbus_A340-500 917 13.5
+2 Boeing_737-200 917 4.2
+3 Antonov_An-178 925 5.5
+4 Embraer_E190 929 4.5

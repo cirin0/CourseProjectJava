@@ -1,0 +1,5 @@
+1 Embraer_ERJ145 830 5.6
+2 Sukhoi_Superjet_100 840 3.0
+3 Antonov_An-225_Mriya 850 15.4
+4 Boeing_757 850 6.4
+5 Bombardier_CRJ900 882 3.3
