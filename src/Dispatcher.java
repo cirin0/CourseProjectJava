@@ -3,8 +3,8 @@ import java.util.*;
 
 public class Dispatcher {
   public static void main(String[] args) {
-    File inputFiles = new File("C:\\Users\\ivang\\Desktop\\JavaLess\\CourseProject\\inputFiles");
-    File outputFiles = new File("C:\\Users\\ivang\\Desktop\\JavaLess\\CourseProject\\outputFiles");
+    File inputFiles = new File("C:\\Users\\ivang\\Desktop\\JavaLess\\CourseProjectJava\\inputFiles");
+    File outputFiles = new File("C:\\Users\\ivang\\Desktop\\JavaLess\\CourseProjectJava\\outputFiles");
     inputFiles.mkdir();
     outputFiles.mkdir();
 
@@ -151,21 +151,21 @@ class Controller {
     try {
       PrintWriter slowWriter = new PrintWriter(new File(outputFilesDir, "slowAirplanes.txt"));
       for (int i = 0; i < SLOW_AIRPLANES.size(); i++) {
-        slowWriter.println((i + 1)+ " " + SLOW_AIRPLANES.get(i));
+        slowWriter.println((i + 1) + " " + SLOW_AIRPLANES.get(i));
       }
       slowWriter.flush();
       slowWriter.close();
 
       PrintWriter mediumWriter = new PrintWriter(new File(outputFilesDir, "mediumAirplanes.txt"));
       for (int i = 0; i < MEDIUM_AIRPLANES.size(); i++) {
-        mediumWriter.println((i + 1)+ " " + MEDIUM_AIRPLANES.get(i));
+        mediumWriter.println((i + 1) + " " + MEDIUM_AIRPLANES.get(i));
       }
       mediumWriter.flush();
       mediumWriter.close();
 
       PrintWriter fastWriter = new PrintWriter(new File(outputFilesDir, "fastAirplanes.txt"));
       for (int i = 0; i < FAST_AIRPLANES.size(); i++) {
-        fastWriter.println((i + 1)+ " " + FAST_AIRPLANES.get(i));
+        fastWriter.println((i + 1) + " " + FAST_AIRPLANES.get(i));
       }
       fastWriter.flush();
       fastWriter.close();
@@ -176,28 +176,6 @@ class Controller {
 
   private static void sortAirplanes(String key) {
     switch (key) {
-      case "model":{
-        Comparator<Airplane> modelComparator = new Comparator<>() {
-          @Override
-          public int compare(Airplane m1, Airplane m2) {
-            int result = m1.getModel().compareTo(m2.getModel());
-            if (result != 0) {
-              return result;
-            } else {
-              result = Integer.compare(m1.getSpeed(), m2.getSpeed());
-              if (result != 0) {
-                return result;
-              } else {
-                return Double.compare(m1.getDistance(), m2.getDistance());
-              }
-            }
-          }
-        };
-        Collections.sort(SLOW_AIRPLANES, modelComparator);
-        Collections.sort(MEDIUM_AIRPLANES, modelComparator);
-        Collections.sort(FAST_AIRPLANES, modelComparator);
-        break;
-      }
       case "speed": {
         Comparator<Airplane> speedComparator = new Comparator<>() {
           @Override
@@ -242,6 +220,7 @@ class Controller {
         Collections.sort(FAST_AIRPLANES, distanceComparator);
         break;
       }
+      case "model":
       default:
         Collections.sort(SLOW_AIRPLANES);
         Collections.sort(MEDIUM_AIRPLANES);
